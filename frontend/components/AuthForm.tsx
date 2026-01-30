@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import ErrorBanner from './ErrorBanner';
 import { authApi } from '../lib/api';
 import { useToast } from './ToastProvider';
@@ -27,6 +28,8 @@ export default function AuthForm({ mode }: AuthFormProps) {
     try {
       if (mode === 'login') {
         await authApi.login(email, password);
+        window.localStorage.setItem('auth_state', 'logged_in');
+        window.dispatchEvent(new Event('auth_state_change'));
         push({ message: 'Logged in successfully', type: 'success' });
         router.push('/');
         router.refresh();
@@ -82,6 +85,28 @@ export default function AuthForm({ mode }: AuthFormProps) {
       >
         {loading ? 'Please wait...' : mode === 'login' ? 'Login' : 'Create account'}
       </button>
+      {mode === 'login' ? (
+        <p className="text-xs text-slate-500">
+          Your data is never shared with any third party.
+        </p>
+      ) : null}
+      <p className="text-sm text-slate-600">
+        {mode === 'login' ? (
+          <>
+            Don&apos;t have an account yet?{' '}
+            <Link href="/register" className="font-semibold text-purple-600">
+              Sign up
+            </Link>
+          </>
+        ) : (
+          <>
+            Already have an account?{' '}
+            <Link href="/login" className="font-semibold text-purple-600">
+              Log in
+            </Link>
+          </>
+        )}
+      </p>
     </form>
   );
 }
