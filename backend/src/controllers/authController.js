@@ -63,4 +63,16 @@ const logout = (req, res) => {
   return res.json({ message: 'Logged out' });
 };
 
-module.exports = { register, login, logout };
+const me = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId).select('_id email');
+    if (!user) {
+      return res.status(401).json({ message: 'Authentication required' });
+    }
+    return res.json({ user: { id: user._id, email: user.email } });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+module.exports = { register, login, logout, me };
