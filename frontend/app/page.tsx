@@ -9,15 +9,42 @@ export default async function DashboardPage() {
 
   if (unauthorized) {
     return (
-      <div className="space-y-4 rounded-lg border border-slate-200 bg-white p-6">
-        <h1 className="text-2xl font-semibold text-slate-900">Dashboard</h1>
-        <p className="text-sm text-slate-600">You must be logged in to view your jobs.</p>
-        <Link
-          href="/login"
-          className="inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
-        >
-          Go to login
-        </Link>
+      <div className="page">
+        <section className="hero">
+          <div className="glow" />
+          <div className="relative z-10">
+            <p className="text-sm font-semibold uppercase tracking-wide text-purple-600 dark:text-purple-300">
+              Organize your search
+            </p>
+            <h1 className="hero-title mt-3">Stay organized on your job hunt</h1>
+            <p className="hero-subtitle">
+              Track applications, interviews, and offers in one clean workspace. HireTrack keeps your search focused and stress-free.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <Link href="/register" className="button rounded-full">
+                Get started
+              </Link>
+              <Link href="/login" className="button-secondary rounded-full">
+                Login
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <section className="grid gap-4 md:grid-cols-3">
+          <div className="card">
+            <h3 className="card-title">Track everything</h3>
+            <p className="card-subtitle">See every application, role, and status at a glance.</p>
+          </div>
+          <div className="card">
+            <h3 className="card-title">Update fast</h3>
+            <p className="card-subtitle">Edit in place, change status, and keep notes tidy.</p>
+          </div>
+          <div className="card">
+            <h3 className="card-title">Stay focused</h3>
+            <p className="card-subtitle">Filter and sort to prioritize what matters today.</p>
+          </div>
+        </section>
       </div>
     );
   }
@@ -29,7 +56,7 @@ export default async function DashboardPage() {
           <h1 className="text-3xl font-semibold text-slate-900 dark:text-white">Dashboard</h1>
           <p className="text-sm text-slate-600 dark:text-slate-300">Track and manage your applications.</p>
         </div>
-        <Link href="/add-job" className="button">
+        <Link href="/add-job" className="button rounded-full">
           Add job
         </Link>
       </div>
