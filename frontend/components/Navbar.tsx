@@ -17,16 +17,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const stored = window.localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const isDark = stored ? stored === 'dark' : prefersDark;
-    setDarkMode(isDark);
-    document.documentElement.classList.toggle('dark', isDark);
-  }, []);
 
   useEffect(() => {
     const savedState = window.localStorage.getItem('auth_state');
@@ -54,13 +45,6 @@ export default function Navbar() {
       window.removeEventListener(AUTH_EVENT, onAuthChange);
     };
   }, []);
-
-  const toggleDarkMode = () => {
-    const next = !darkMode;
-    setDarkMode(next);
-    document.documentElement.classList.toggle('dark', next);
-    window.localStorage.setItem('theme', next ? 'dark' : 'light');
-  };
 
   const handleLogout = async () => {
     setLoading(true);
@@ -104,9 +88,6 @@ export default function Navbar() {
                 <Link href="/register" className={linkClasses(pathname === '/register')}>Register</Link>
               </>
             )}
-            <button type="button" onClick={toggleDarkMode} className="button-secondary rounded-full">
-              {darkMode ? 'Light mode' : 'Dark mode'}
-            </button>
             {isAuthenticated && (
               <button
                 type="button"
