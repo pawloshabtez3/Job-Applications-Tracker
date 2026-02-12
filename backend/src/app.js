@@ -8,10 +8,29 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
+const normalizeOrigin = (value = '') => value.trim().replace(/\/+$/, '');
+
+const allowedOrigins = (process.env.CLIENT_ORIGIN || '')
+  .split(',')
+  .map((origin) => normalizeOrigin(origin))
+  .filter(Boolean);
+
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN,
+    origin: (origin, callback) => {
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      const normalizedRequestOrigin = normalizeOrigin(origin);
+
+      if (allowedOrigins.length === 0 || allowedOrigins.includes(normalizedRequestOrigin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true
   })
 );

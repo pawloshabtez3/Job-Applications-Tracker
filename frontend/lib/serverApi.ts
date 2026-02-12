@@ -2,12 +2,13 @@ import { cookies } from 'next/headers';
 import type { Job } from './types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const NORMALIZED_API_URL = API_URL.replace(/\/+$/, '');
 
 export const fetchJobs = async () => {
   const cookieStore = cookies();
   const cookieHeader = cookieStore.toString();
 
-  const res = await fetch(`${API_URL}/jobs`, {
+  const res = await fetch(`${NORMALIZED_API_URL}/jobs`, {
     headers: cookieHeader ? { cookie: cookieHeader } : {},
     credentials: 'include',
     cache: 'no-store'
